@@ -8,6 +8,7 @@ import logoUrl from '#src/app/logo.svg'
 import { PageShell } from '#src/app/PageShell'
 import invariant from '#src/lib/invariant'
 import createEmotionCache from '#src/mui/createEmotionCache'
+import { renderToStringWithData } from "@apollo/client/react/ssr";
 
 const onRenderHtml: OnRenderHtmlAsync = async (pageContext) => {
   const { Page, pageProps } = pageContext
@@ -22,6 +23,12 @@ const onRenderHtml: OnRenderHtmlAsync = async (pageContext) => {
       <Page {...pageProps} />
     </PageShell>,
   )
+
+  // const pageHtml = await renderToStringWithData(
+  //   <PageShell pageContext={pageContext} emotionCache={emotionCache}>
+  //     <Page {...pageProps} />
+  //   </PageShell>,    
+  // )
 
   const chunks = extractCriticalToChunks(pageHtml)
   const styles = constructStyleTagsFromChunks(chunks)

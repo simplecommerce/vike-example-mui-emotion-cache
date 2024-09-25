@@ -1,26 +1,23 @@
 import type { EmotionCache } from '@emotion/react'
 import { CacheProvider } from '@emotion/react'
-import {
-  Box,
-  Container,
-  CssBaseline,
-  Divider,
-  List,
-  ListItemButton,
-  ListItemText,
-  Paper,
-  Stack,
-  ThemeProvider,
-} from '@mui/material'
 import { StrictMode } from 'react'
-
-import { Link } from './Link'
-import logo from './logo.svg'
-import theme from './theme'
-
-import { PageContextProvider } from '#src/renderer/PageContext'
-
 import './mui-overrides.css'
+import { makeStyles } from "tss-react/mui";
+
+const TestComponent = () => {
+    const useStyles = makeStyles()({
+      //If you don't need neither the theme nor any state or
+      //props to describe your component style you can pass-in
+      //an object instead of a callback.
+      "root": {
+          "color": "red"
+      }
+  });
+  const classes = useStyles().classes
+  console.log("TestComponent render")
+
+	return <div className={classes.root}>test</div>;
+};
 
 export function PageShell({
   children,
@@ -34,64 +31,8 @@ export function PageShell({
   return (
     <StrictMode>
       <CacheProvider value={emotionCache}>
-        <PageContextProvider value={pageContext}>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <Layout>
-              <Stack
-                direction="row"
-                spacing={2}
-                divider={<Divider flexItem orientation="vertical" />}
-                flexGrow={1}
-              >
-                <Sidebar />
-
-                <Box paddingY={2} flexGrow={1}>
-                  {children}
-                </Box>
-              </Stack>
-            </Layout>
-          </ThemeProvider>
-        </PageContextProvider>
+        <TestComponent />
       </CacheProvider>
     </StrictMode>
-  )
-}
-
-function Layout({ children }: React.PropsWithChildren) {
-  return (
-    <Box minHeight="100vh" display="flex">
-      <Container
-        maxWidth="md"
-        sx={{
-          display: 'flex',
-        }}
-      >
-        {children}
-      </Container>
-    </Box>
-  )
-}
-
-function Sidebar() {
-  return (
-    <Box paddingY={2} display="flex" flex="0 0 200px">
-      <Paper sx={{ flexGrow: 1 }}>
-        <Box padding={2}>
-          <a href="/">
-            <img src={logo} width="100%" alt="logo" />
-          </a>
-        </Box>
-
-        <List disablePadding>
-          <ListItemButton component={Link} href="/" divider>
-            <ListItemText primary="Home" />
-          </ListItemButton>
-          <ListItemButton component={Link} href="/about">
-            <ListItemText primary="About" />
-          </ListItemButton>
-        </List>
-      </Paper>
-    </Box>
   )
 }
